@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Packing System (Secured)</title>
+    <title>Packing System (Secured & Mobile Optimized)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@300;400;500;600;700&display=swap');
         
@@ -139,7 +139,7 @@
             outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(15, 76, 117, 0.1);
         }
         
-        .product-table, .queue-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; overflow-x: auto; }
+        .product-table, .queue-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
         
         .product-table th, .queue-table th {
             background: var(--secondary); color: white; padding: 1rem;
@@ -246,6 +246,120 @@
 
         .record-filters { display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
         
+        /* ==========================================
+           MOBILE & TABLET OPTIMIZATIONS
+           ========================================== */
+        @media screen and (max-width: 768px) {
+            .container { padding: 1rem; }
+            
+            header { 
+                flex-direction: column; 
+                text-align: center; 
+                gap: 1rem; 
+                padding: 1.5rem;
+            }
+
+            header h1 { font-size: 1.8rem; }
+
+            .tab-navigation {
+                gap: 0.5rem;
+                padding: 0.5rem;
+                justify-content: center;
+            }
+
+            .tab-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+                flex: 1 1 45%; 
+                text-align: center;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            /* Table to Card Transformation */
+            .product-table thead, 
+            .record-table thead,
+            .queue-table thead {
+                display: none; 
+            }
+
+            .product-table tr, 
+            .record-table tr, 
+            .queue-table tr {
+                display: block;
+                background: #fff;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                margin-bottom: 1.5rem;
+                padding: 1rem;
+                position: relative;
+                box-shadow: 0 2px 8px var(--shadow);
+            }
+
+            .product-table td, 
+            .record-table td, 
+            .queue-table td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border: none;
+                padding: 0.6rem 0;
+                text-align: right;
+                width: 100% !important;
+                min-height: 40px;
+            }
+
+            /* Add labels for mobile table view */
+            .record-table td::before, 
+            .queue-table td::before,
+            .product-table td::before {
+                content: attr(data-label);
+                font-weight: 700;
+                text-transform: uppercase;
+                font-size: 0.75rem;
+                color: var(--text-light);
+                float: left;
+                text-align: left;
+            }
+
+            .action-btns {
+                width: 100%;
+                justify-content: stretch;
+                margin-top: 0.8rem;
+                gap: 0.5rem;
+            }
+
+            .action-btn {
+                flex: 1;
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+                max-height: 95vh;
+                overflow-y: auto;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 1.2rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+        }
+
         @media print {
             body { background: white; margin: 0; padding: 0; }
             #login-overlay, .container, header, .tab-navigation, .btn, .card, .modal { display: none !important; }
@@ -376,13 +490,13 @@
                         </thead>
                         <tbody id="productTableBody">
                             <tr data-row="1">
-                                <td>1</td>
-                                <td><input type="text" class="product-name" placeholder="Product name" required></td>
-                                <td><input type="number" class="qty-per-box" min="1" placeholder="10" oninput="calculateBoxes(1)" required></td>
-                                <td><input type="number" class="total-qty" min="1" placeholder="100" oninput="calculateBoxes(1)" required></td>
-                                <td class="calculated"><span class="box-count">0</span></td>
-                                <td><input type="text" class="remarks" placeholder="Optional"></td>
-                                <td><button class="btn-danger action-btn" onclick="removeRow(1)">✕</button></td>
+                                <td data-label="#">1</td>
+                                <td data-label="Product Name"><input type="text" class="product-name" placeholder="Product name" required></td>
+                                <td data-label="Qty per Box"><input type="number" class="qty-per-box" min="1" placeholder="10" oninput="calculateBoxes(1)" required></td>
+                                <td data-label="Total Qty"><input type="number" class="total-qty" min="1" placeholder="100" oninput="calculateBoxes(1)" required></td>
+                                <td data-label="Boxes" class="calculated"><span class="box-count">0</span></td>
+                                <td data-label="Remarks"><input type="text" class="remarks" placeholder="Optional"></td>
+                                <td data-label="Action"><button class="btn-danger action-btn" onclick="removeRow(1)">✕</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -464,7 +578,7 @@
             </div>
 
             <div class="card">
-                <h2 class="card-title">Orders Ready for Withdrawal (Auto-moved from Packing)</h2>
+                <h2 class="card-title">Orders Ready for Withdrawal</h2>
                 <div class="record-filters">
                     <input type="text" id="withdrawalSearch" placeholder="🔍 Search Order or Customer..." onkeyup="renderWithdrawalList()" style="width: 300px; padding: 0.5rem; margin-right: 1rem;">
                     <select id="withdrawalSortBy" onchange="renderWithdrawalList()" style="padding: 0.5rem;">
@@ -549,7 +663,7 @@
                 <h2 class="card-title">Generate Packing List PDF</h2>
                 <div class="form-group" style="max-width: 400px;">
                     <label for="packingListOrderNumber">Select Order Number *</label>
-                    <select id="packingListOrderNumber" style="padding: 0.875rem; border: 2px solid var(--border); border-radius: 8px;">
+                    <select id="packingListOrderNumber">
                         <option value="">-- Select Order --</option>
                     </select>
                 </div>
@@ -563,22 +677,6 @@
         </div>
     </div>
     
-    <div id="editLotModal" class="modal">
-        <div class="modal-content">
-            <h3 class="modal-header">Edit LOT Number(s)</h3>
-            <div class="form-group"><label>Product Name:</label><input type="text" id="modalProductName" readonly style="background: #f0f0f0;"></div>
-            <div class="form-group">
-                <label>LOT Number(s):</label>
-                <textarea id="modalLotNumber" rows="5" placeholder="Enter LOT Number(s)"></textarea>
-                <small style="color: var(--text-light);">* Press Enter for new line to separate multiple LOTs</small>
-            </div>
-            <div class="btn-group">
-                <button class="btn btn-success" onclick="saveLotNumber()">💾 Save</button>
-                <button class="btn btn-secondary" onclick="closeModal()">✕ Cancel</button>
-            </div>
-        </div>
-    </div>
-
     <div id="editBoxModal" class="modal">
         <div class="modal-content">
             <h3 class="modal-header" id="editModalTitle">Edit Box Details</h3>
@@ -592,7 +690,7 @@
             <hr style="border:0; border-top:1px solid #eee; margin: 1rem 0;">
             <div class="form-group" id="editReasonGroup" style="display:none;">
                 <label style="color: var(--danger);">Reason for Edit (Required)*:</label>
-                <textarea id="editModalReason" rows="2" placeholder="e.g. Keyed wrong number, Counted error..."></textarea>
+                <textarea id="editModalReason" rows="2" placeholder="e.g. Keyed wrong number..."></textarea>
             </div>
             <div class="btn-group">
                 <button class="btn btn-success" onclick="saveBoxEdit()">💾 Save Changes</button>
@@ -608,33 +706,6 @@
             <div class="btn-group">
                 <button class="btn btn-danger" onclick="confirmDelete()">🗑️ Delete</button>
                 <button class="btn btn-secondary" onclick="closeDeleteModal()">✕ Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="withdrawalModal" class="modal">
-        <div class="modal-content" style="max-width: 600px;">
-            <h3 class="modal-header">📤 Complete Withdrawal</h3>
-            <div id="withdrawalOrderInfo" style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;"></div>
-            <div class="form-group">
-                <label>Withdrawn By (Name) *</label>
-                <input type="text" id="withdrawnBy" placeholder="Enter name" style="padding: 0.875rem; border: 2px solid var(--border); border-radius: 8px; width: 100%;">
-            </div>
-            <div class="form-group">
-                <label>Withdrawal Date *</label>
-                <input type="date" id="withdrawalDate" style="padding: 0.875rem; border: 2px solid var(--border); border-radius: 8px; width: 100%;">
-            </div>
-            <div class="form-group">
-                <label>Withdrawal Time *</label>
-                <input type="time" id="withdrawalTime" style="padding: 0.875rem; border: 2px solid var(--border); border-radius: 8px; width: 100%;">
-            </div>
-            <div class="form-group">
-                <label>Notes (Optional)</label>
-                <textarea id="withdrawalNotes" rows="3" placeholder="Any special notes..." style="padding: 0.875rem; border: 2px solid var(--border); border-radius: 8px; width: 100%; resize: vertical;"></textarea>
-            </div>
-            <div class="btn-group">
-                <button class="btn btn-success" onclick="confirmWithdrawal()">✅ Complete Withdrawal</button>
-                <button class="btn btn-secondary" onclick="closeWithdrawalModal()">✕ Cancel</button>
             </div>
         </div>
     </div>
@@ -687,7 +758,6 @@
         let deleteTarget = null;
         let currentFilterType = 'all'; 
         let currentEditType = 'assign';
-        let currentWithdrawalOrder = null;
         let currentStockEditOrder = null;
         let currentQCInspectionOrder = null;
         let currentReworkOrder = null;
@@ -705,15 +775,8 @@
                 const role = USERS[code];
                 document.getElementById('login-overlay').style.display = 'none';
                 document.getElementById('mainApp').style.display = 'block';
-                
                 setUserRole(role);
-                
-                if (role !== 'supervisor') {
-                    document.getElementById('navCard').style.display = 'none';
-                } else {
-                    document.getElementById('navCard').style.display = 'block';
-                }
-                
+                document.getElementById('navCard').style.display = (role === 'supervisor') ? 'block' : 'none';
                 document.getElementById('userRoleDisplay').innerText = `Logged in as: ${role.toUpperCase()}`;
             } else {
                 alert("Incorrect Access Code");
@@ -738,8 +801,6 @@
             if (qtyPerBox > 0 && totalQty > 0) {
                 const boxes = Math.ceil(totalQty / qtyPerBox);
                 boxDisplay.textContent = boxes;
-                boxDisplay.parentElement.style.backgroundColor = '#d1e7dd';
-                setTimeout(() => { boxDisplay.parentElement.style.backgroundColor = '#e8f4f8'; }, 300);
             } else {
                 boxDisplay.textContent = '0';
             }
@@ -751,13 +812,13 @@
             const newRow = document.createElement('tr');
             newRow.setAttribute('data-row', rowCounter);
             newRow.innerHTML = `
-                <td>${rowCounter}</td>
-                <td><input type="text" class="product-name" placeholder="Product name" required></td>
-                <td><input type="number" class="qty-per-box" min="1" placeholder="10" oninput="calculateBoxes(${rowCounter})" required></td>
-                <td><input type="number" class="total-qty" min="1" placeholder="100" oninput="calculateBoxes(${rowCounter})" required></td>
-                <td class="calculated"><span class="box-count">0</span></td>
-                <td><input type="text" class="remarks" placeholder="Optional"></td>
-                <td><button class="btn-danger action-btn" onclick="removeRow(${rowCounter})">✕</button></td>
+                <td data-label="#">${rowCounter}</td>
+                <td data-label="Product Name"><input type="text" class="product-name" placeholder="Product name" required></td>
+                <td data-label="Qty per Box"><input type="number" class="qty-per-box" min="1" oninput="calculateBoxes(${rowCounter})" required></td>
+                <td data-label="Total Qty"><input type="number" class="total-qty" min="1" oninput="calculateBoxes(${rowCounter})" required></td>
+                <td data-label="Boxes" class="calculated"><span class="box-count">0</span></td>
+                <td data-label="Remarks"><input type="text" class="remarks" placeholder="Optional"></td>
+                <td data-label="Action"><button class="btn-danger action-btn" onclick="removeRow(${rowCounter})">✕</button></td>
             `;
             tbody.appendChild(newRow);
         }
@@ -766,33 +827,23 @@
             const row = document.querySelector(`tr[data-row="${rowNum}"]`);
             if (row && document.querySelectorAll('#productTableBody tr').length > 1) {
                 row.remove();
-            } else {
-                showAlert('Cannot remove the last row', 'error');
             }
         }
 
         function resetProductTable() {
-            const tbody = document.getElementById('productTableBody');
-            tbody.innerHTML = '';
-            rowCounter = 1;
-            addProductRow();
+            document.getElementById('productTableBody').innerHTML = '';
+            rowCounter = 0; addProductRow();
         }
 
         function setUserRole(role) {
             currentUserRole = role;
             document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
             const buttons = document.querySelectorAll('.role-btn');
-            buttons.forEach(btn => {
-                if(btn.getAttribute('onclick').includes(role)) {
-                    btn.classList.add('active');
-                }
-            });
+            buttons.forEach(btn => { if(btn.getAttribute('onclick').includes(role)) btn.classList.add('active'); });
             renderRecords();
         }
 
-        function setRole(role) {
-            setUserRole(role);
-        }
+        function setRole(role) { setUserRole(role); }
 
         function switchTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
@@ -814,38 +865,27 @@
             const packingDate = document.getElementById('packingDate').value;
 
             if (!orderNumber || !customerName || !deliveryLocation || !packingDate) {
-                showAlert('Please fill in all order information fields', 'error');
-                return;
+                showAlert('Please fill in all order information fields', 'error'); return;
             }
 
-            const existingInQueue = packingQueue.find(q => q.orderNumber === orderNumber);
-            if (existingInQueue) { showAlert('Order Number already in queue.', 'error'); return; }
-
             const rows = document.querySelectorAll('#productTableBody tr');
-            let hasProducts = false;
-            let totalBoxes = 0;
-            const productData = [];
+            let totalBoxes = 0; const productData = [];
 
             rows.forEach(row => {
                 const productName = row.querySelector('.product-name').value.trim();
                 const qtyPerBox = parseInt(row.querySelector('.qty-per-box').value) || 0;
                 const totalQty = parseInt(row.querySelector('.total-qty').value) || 0;
-                const remarks = row.querySelector('.remarks').value.trim();
                 const boxes = parseInt(row.querySelector('.box-count').textContent) || 0;
-
-                if (productName && qtyPerBox > 0 && totalQty > 0 && boxes > 0) {
-                    hasProducts = true;
+                if (productName && qtyPerBox > 0 && boxes > 0) {
                     totalBoxes += boxes;
-                    productData.push({ productName, qtyPerBox, totalQty, boxes, remarks });
+                    productData.push({ productName, qtyPerBox, totalQty, boxes, remarks: row.querySelector('.remarks').value.trim() });
                 }
             });
 
-            if (!hasProducts) { showAlert('Please add at least one valid product', 'error'); return; }
+            if (productData.length === 0) { showAlert('Please add at least one valid product', 'error'); return; }
 
             packingQueue.push({ id: Date.now(), orderNumber, customerName, deliveryLocation, packingDate, products: productData, totalBoxes });
-            saveQueueToStorage();
-            renderQueue();
-            
+            saveQueueToStorage(); renderQueue();
             document.getElementById('orderNumber').value = '';
             document.getElementById('customerName').value = '';
             resetProductTable();
@@ -854,89 +894,44 @@
 
         function renderQueue() {
             const tbody = document.getElementById('queueTableBody');
-            const emptyState = document.getElementById('empty-queue');
-            const actionDiv = document.getElementById('generate-actions');
-            const countSpan = document.getElementById('queue-count');
             const badgeTab = document.getElementById('queue-badge-tab');
-
             tbody.innerHTML = '';
-            countSpan.textContent = `${packingQueue.length} Orders`;
+            
+            document.getElementById('queue-count').textContent = `${packingQueue.length} Orders`;
             if(badgeTab) {
                 badgeTab.textContent = packingQueue.length;
                 badgeTab.style.display = packingQueue.length > 0 ? 'inline-block' : 'none';
             }
 
-            if (packingQueue.length === 0) {
-                emptyState.style.display = 'block'; actionDiv.style.display = 'none'; return;
-            }
-            emptyState.style.display = 'none'; actionDiv.style.display = 'flex';
+            document.getElementById('empty-queue').style.display = packingQueue.length === 0 ? 'block' : 'none';
+            document.getElementById('generate-actions').style.display = packingQueue.length === 0 ? 'none' : 'flex';
 
             packingQueue.forEach((item, index) => {
                 const row = document.createElement('tr');
                 const productSummary = item.products.map(p => `${p.productName} (${p.boxes})`).join(', ');
                 row.innerHTML = `
-                    <td><strong>${item.orderNumber}</strong></td>
-                    <td>${item.customerName}</td>
-                    <td><div style="font-size: 0.85rem;">${productSummary}</div></td>
-                    <td style="text-align: center; font-weight: bold;">${item.totalBoxes}</td>
-                    <td><div class="action-btns"><button class="action-btn btn-warning" onclick="editQueueItem(${index})">✏️ Edit</button><button class="action-btn btn-danger" onclick="deleteQueueItem(${index})">✕</button></div></td>
+                    <td data-label="Order #"><strong>${item.orderNumber}</strong></td>
+                    <td data-label="Customer">${item.customerName}</td>
+                    <td data-label="Products"><div style="font-size: 0.85rem;">${productSummary}</div></td>
+                    <td data-label="Total Boxes" style="text-align: center; font-weight: bold;">${item.totalBoxes}</td>
+                    <td data-label="Actions"><div class="action-btns">
+                        <button class="action-btn btn-warning" onclick="editQueueItem(${index})">✏️ Edit</button>
+                        <button class="action-btn btn-danger" onclick="deleteQueueItem(${index})">✕</button>
+                    </div></td>
                 `;
                 tbody.appendChild(row);
             });
         }
 
-        function editQueueItem(index) {
-            const item = packingQueue[index];
-            document.getElementById('orderNumber').value = item.orderNumber;
-            document.getElementById('customerName').value = item.customerName;
-            document.getElementById('deliveryLocation').value = item.deliveryLocation;
-            document.getElementById('packingDate').value = item.packingDate;
-
-            const tbody = document.getElementById('productTableBody');
-            tbody.innerHTML = '';
-            rowCounter = 0;
-
-            item.products.forEach(prod => {
-                rowCounter++;
-                const newRow = document.createElement('tr');
-                newRow.setAttribute('data-row', rowCounter);
-                newRow.innerHTML = `
-                    <td>${rowCounter}</td>
-                    <td><input type="text" class="product-name" value="${prod.productName}" placeholder="Product name" required></td>
-                    <td><input type="number" class="qty-per-box" value="${prod.qtyPerBox}" min="1" oninput="calculateBoxes(${rowCounter})" required></td>
-                    <td><input type="number" class="total-qty" value="${prod.totalQty}" min="1" oninput="calculateBoxes(${rowCounter})" required></td>
-                    <td class="calculated"><span class="box-count">${prod.boxes}</span></td>
-                    <td><input type="text" class="remarks" value="${prod.remarks}" placeholder="Optional"></td>
-                    <td><button class="btn-danger action-btn" onclick="removeRow(${rowCounter})">✕</button></td>
-                `;
-                tbody.appendChild(newRow);
-            });
-
-            packingQueue.splice(index, 1);
-            saveQueueToStorage();
-            renderQueue();
-            showAlert('Order loaded for editing', 'success');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function deleteQueueItem(index) {
-            if(confirm('Remove this order from queue?')) {
-                packingQueue.splice(index, 1);
-                saveQueueToStorage();
-                renderQueue();
-            }
-        }
-
         function generateAllLabels() {
             if (packingQueue.length === 0) return;
-            let totalGenerated = 0;
             packingQueue.forEach(order => {
                 let boxNumber = 1;
                 order.products.forEach(product => {
                     for (let i = 0; i < product.boxes; i++) {
                         const qtyInBox = (i === product.boxes - 1) ? product.totalQty - (i * product.qtyPerBox) : product.qtyPerBox;
                         boxRecords.push({
-                            id: generateBoxId(),
+                            id: 'BOX-' + Date.now() + Math.random().toString(36).substr(2, 4).toUpperCase(),
                             orderNumber: order.orderNumber,
                             customerName: order.customerName,
                             deliveryLocation: order.deliveryLocation,
@@ -948,120 +943,68 @@
                             packingDate: order.packingDate,
                             remarks: product.remarks,
                             status: 'Pending Lot',
-                            auditLogs: [],
                             deleted: false,
-                            withdrawn: false,
-                            withdrawalInfo: null,
                             workflowStatus: 'Orders Ready for Withdrawal',
                             itemStatus: 'Pending Stock Review',
                             stockAdjustedQty: qtyInBox,
-                            stockAdjustedLot: '',
-                            qcPassQty: 0,
-                            qcFailQty: 0,
-                            qcInspectedQty: 0,
-                            reworkQty: 0,
-                            finalApprovedQty: 0
+                            qcPassQty: 0, qcFailQty: 0, reworkQty: 0, finalApprovedQty: 0
                         });
-                        totalGenerated++;
                     }
                 });
             });
-            packingQueue = [];
-            saveQueueToStorage();
-            saveRecordsToStorage();
-            renderQueue();
-            generateLabelPreviews();
-            populateOrderNumberDropdown();
-            showAlert(`Generated ${totalGenerated} labels!`, 'success');
-            setTimeout(() => { document.querySelector('[onclick="switchTab(\'records\')"]').click(); }, 1000);
+            packingQueue = []; saveQueueToStorage(); saveRecordsToStorage();
+            renderQueue(); renderRecords(); populateOrderNumberDropdown();
+            showAlert('Labels generated!', 'success');
         }
 
-        function clearFormInputs() {
-            if(confirm('Clear form inputs? (Queue will remain)')) {
-                document.getElementById('orderNumber').value = '';
-                document.getElementById('customerName').value = '';
-                resetProductTable();
-            }
-        }
+        function renderOrderList() {
+            const tbody = document.getElementById('orderListBody');
+            tbody.innerHTML = '';
+            let orders = groupRecordsByOrder(boxRecords);
+            const search = document.getElementById('mainSearch').value.toLowerCase();
 
-        function generateBoxId() { 
-            return 'BOX-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5).toUpperCase(); 
-        }
+            orders = orders.filter(o => o.orderNumber.toLowerCase().includes(search) || o.customerName.toLowerCase().includes(search));
 
-        function generateLabelPreviews() {
-            const container = document.getElementById('label-preview-container');
-            const printContainer = document.getElementById('print-labels-container');
-            container.innerHTML = ''; printContainer.innerHTML = '';
-            
-            const activeRecords = boxRecords.filter(r => !r.deleted).reverse().slice(0, 50);
-            
-            if (activeRecords.length === 0) {
-                 document.getElementById('label-actions').style.display = 'none';
-                 container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🏷️</div><div class="empty-state-text">No labels generated yet</div></div>`;
-                 return;
-            }
-            document.getElementById('label-actions').style.display = 'flex';
-            activeRecords.forEach(record => {
-                container.appendChild(createLabelPreview(record));
-                printContainer.appendChild(createPrintLabel(record));
+            updateStats();
+            document.getElementById('empty-history').style.display = orders.length === 0 ? 'block' : 'none';
+
+            orders.forEach(order => {
+                const progress = Math.round((order.boxesWithLot / order.totalBoxes) * 100);
+                const statusClass = order.isLocked ? 'status-locked' : (progress === 100 ? 'status-packed' : 'status-updated');
+                
+                const tr = document.createElement('tr');
+                tr.className = 'order-row';
+                tr.onclick = (e) => { if(!e.target.closest('button')) toggleOrderDetails(order.orderNumber, tr); };
+                tr.innerHTML = `
+                    <td style="text-align:center;">▶</td>
+                    <td data-label="Order Number" style="font-weight:700;">${order.orderNumber}</td>
+                    <td data-label="Customer">${order.customerName}</td>
+                    <td data-label="Packing Date">${order.packingDate}</td>
+                    <td data-label="Progress"><div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div><small>${order.boxesWithLot}/${order.totalBoxes}</small></td>
+                    <td data-label="Status"><span class="status-badge ${statusClass}">${order.isLocked ? 'QC Locked' : (progress === 100 ? 'Completed' : 'In Progress')}</span></td>
+                    <td data-label="Actions"><div class="action-btns">
+                        <button class="action-btn btn-secondary" onclick="generatePackingListPDFForOrder('${order.orderNumber}')">📄 List</button>
+                    </div></td>
+                `;
+                tbody.appendChild(tr);
+
+                const detailsTr = document.createElement('tr');
+                detailsTr.id = `details-${order.orderNumber}`;
+                detailsTr.className = 'order-details-row';
+                let nestedHtml = `<td colspan="7"><div style="padding: 1rem;"><table class="nested-table"><thead><tr><th>Box ID</th><th>Product</th><th>Qty</th><th>LOT</th><th>Action</th></tr></thead><tbody>`;
+                order.boxes.forEach(box => {
+                    nestedHtml += `<tr>
+                        <td>${box.id.split('-').pop()}</td>
+                        <td>${box.productName}</td>
+                        <td>${box.qtyInBox}</td>
+                        <td>${box.lotNumber || '-'}</td>
+                        <td><button class="btn-sm btn-warning" onclick="openEditModal('${box.id}', 'retro')">✏️ Edit</button></td>
+                    </tr>`;
+                });
+                nestedHtml += `</tbody></table></div></td>`;
+                detailsTr.innerHTML = nestedHtml;
+                tbody.appendChild(detailsTr);
             });
-        }
-
-        function createLabelPreview(record) {
-            const hasMultipleLots = record.lotNumber && (record.lotNumber.includes('\n') || record.lotNumber.includes(','));
-            const div = document.createElement('div');
-            div.className = 'card'; div.style.marginBottom = '1rem';
-            div.innerHTML = `
-                <div style="display:flex;justify-content:space-between;align-items:start;">
-                    <div>
-                        <div style="font-weight:700;font-size:1.2rem;color:var(--primary);">${record.productName}</div>
-                        <div style="font-size:0.9rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:0.5rem;">
-                            <div>Order: ${record.orderNumber}</div>
-                            <div>Box: ${record.boxNumber}/${record.totalBoxes}</div>
-                            <div>Qty: ${record.qtyInBox}</div>
-                            <div>LOT: ${hasMultipleLots ? '📚 Mixed Lots' : (record.lotNumber||'-')}</div>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" onclick="printSingleLabel('${record.id}')">🖨️</button>
-                </div>`;
-            return div;
-        }
-
-        function createPrintLabel(record) {
-            const lotText = record.lotNumber || '___________';
-            const isMixedLot = lotText.includes('\n') || lotText.length > 20;
-            const mixedLotClass = isMixedLot ? 'mixed-lot' : '';
-
-            const div = document.createElement('div');
-            div.className = 'print-label'; div.id = 'print-' + record.id;
-            div.innerHTML = `
-                <div class="label-header"><div class="label-title">PACKING & BOX LABEL</div></div>
-                <div class="label-customer-highlight">${record.customerName}</div>
-                <div class="label-info">
-                    <div><strong>Order:</strong> ${record.orderNumber}<br><strong>Loc:</strong> ${record.deliveryLocation}</div>
-                    <div><strong>Date:</strong> ${record.packingDate}<br><strong>ID:</strong> ${record.id}</div>
-                </div>
-                <div style="text-align:center;margin:2rem 0;font-size:2rem;font-weight:bold;">BOX ${record.boxNumber} / ${record.totalBoxes}</div>
-                <div class="label-product"><div class="label-product-name">${record.productName}</div><div class="label-quantity">Qty: ${record.qtyInBox}</div></div>
-                
-                <div class="label-lot">
-                    <div class="label-lot-title">LOT NUMBER:</div>
-                    <div class="label-lot-content ${mixedLotClass}">${lotText}</div>
-                </div>
-                
-                ${record.remarks ? `<div class="label-remarks"><strong>Remarks:</strong> ${record.remarks}</div>` : ''}
-                <div class="label-signatures">
-                    <div class="label-signature"><div style="height:3rem"></div>Packed by: _______</div>
-                    <div class="label-signature"><div style="height:3rem"></div>Checked by: _______</div>
-                </div>`;
-            return div;
-        }
-
-        function printAllLabels() { window.print(); }
-        function printSingleLabel(id) {
-            document.querySelectorAll('.print-label').forEach(l => l.style.display = 'none');
-            const t = document.getElementById('print-' + id);
-            if(t) { t.style.display = 'block'; window.print(); t.style.display = 'none'; }
         }
 
         function groupRecordsByOrder(records) {
@@ -1069,467 +1012,91 @@
             records.forEach(r => {
                 if (r.deleted) return;
                 if (!orders[r.orderNumber]) {
-                    orders[r.orderNumber] = {
-                        orderNumber: r.orderNumber,
-                        customerName: r.customerName,
-                        packingDate: r.packingDate,
-                        boxes: [],
-                        totalBoxes: 0,
-                        boxesWithLot: 0,
-                        isLocked: true 
-                    };
+                    orders[r.orderNumber] = { orderNumber: r.orderNumber, customerName: r.customerName, packingDate: r.packingDate, boxes: [], totalBoxes: 0, boxesWithLot: 0, isLocked: (r.workflowStatus === 'Shipped') };
                 }
                 orders[r.orderNumber].boxes.push(r);
                 orders[r.orderNumber].totalBoxes++;
                 if (r.lotNumber) orders[r.orderNumber].boxesWithLot++;
-                if (r.status !== 'QC Locked') orders[r.orderNumber].isLocked = false;
             });
             return Object.values(orders).sort((a,b) => new Date(b.packingDate) - new Date(a.packingDate));
         }
 
-        function setFilter(type, el) {
-            currentFilterType = type;
-            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-            el.classList.add('active');
-            if(type === 'today') document.getElementById('dateFilter').valueAsDate = new Date();
-            else if (type === 'all') document.getElementById('dateFilter').value = '';
-            renderOrderList();
-        }
-
-        function clearAllFilters() {
-            document.getElementById('mainSearch').value = '';
-            document.getElementById('dateFilter').value = '';
-            setFilter('all', document.querySelector('.filter-chip:first-child'));
-        }
-
-        function renderOrderList() {
-            const tbody = document.getElementById('orderListBody');
-            const empty = document.getElementById('empty-history');
-            tbody.innerHTML = '';
-
-            let orders = groupRecordsByOrder(boxRecords);
-            const search = document.getElementById('mainSearch').value.toLowerCase();
-            const dateVal = document.getElementById('dateFilter').value;
-
-            orders = orders.filter(o => {
-                const textMatch = !search || o.orderNumber.toLowerCase().includes(search) || o.customerName.toLowerCase().includes(search) || o.boxes.some(b => b.productName.toLowerCase().includes(search));
-                const dateMatch = !dateVal || o.packingDate === dateVal;
-                let chipMatch = true;
-                if (currentFilterType === 'incomplete') chipMatch = o.boxesWithLot < o.totalBoxes;
-                if (currentFilterType === 'locked') chipMatch = o.isLocked;
-                return textMatch && dateMatch && chipMatch;
-            });
-
-            updateStats();
-
-            if (orders.length === 0) { empty.style.display = 'block'; return; }
-            empty.style.display = 'none';
-
-            orders.forEach(order => {
-                const progress = Math.round((order.boxesWithLot / order.totalBoxes) * 100);
-                const isFullyLocked = order.isLocked;
-                const statusClass = isFullyLocked ? 'status-locked' : (progress === 100 ? 'status-packed' : 'status-updated');
-                const statusText = isFullyLocked ? 'QC Locked' : (progress === 100 ? 'Completed' : 'In Progress');
-
-                const tr = document.createElement('tr');
-                tr.className = 'order-row';
-                tr.onclick = (e) => { if(!e.target.closest('button')) toggleOrderDetails(order.orderNumber, tr); };
-                tr.innerHTML = `
-                    <td style="text-align:center; font-size:1.2rem;">▶</td>
-                    <td style="font-weight:700;">${order.orderNumber}</td>
-                    <td>${order.customerName}</td>
-                    <td>${order.packingDate}</td>
-                    <td><div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div><small>${order.boxesWithLot}/${order.totalBoxes} LOTs</small></td>
-                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                    <td><div class="action-btns"><button class="action-btn btn-secondary" onclick="generatePackingListPDFForOrder('${order.orderNumber}')">📄 List</button>${currentUserRole === 'supervisor' ? `<button class="action-btn btn-danger" onclick="deleteOrderByNumberDirect('${order.orderNumber}')">🗑️ All</button>` : ''}</div></td>
-                `;
-                tbody.appendChild(tr);
-
-                const detailsTr = document.createElement('tr');
-                detailsTr.id = `details-${order.orderNumber}`;
-                detailsTr.className = 'order-details-row';
-                let nestedHtml = `
-                    <td colspan="7"><div style="padding: 1rem;"><strong style="margin-left: 1rem; color: var(--primary);">📦 Product Breakdown for ${order.orderNumber}:</strong>
-                    <table class="nested-table"><thead><tr><th>Box ID</th><th>Product</th><th>Box #</th><th>Qty</th><th>LOT Number</th><th>Status</th><th>Action</th></tr></thead><tbody>
-                `;
-                order.boxes.sort((a,b) => a.boxNumber - b.boxNumber).forEach(box => {
-                     const canEdit = currentUserRole === 'supervisor' || (currentUserRole !== 'packing' && box.status !== 'QC Locked') || (box.status === 'Pending Lot');
-                     const isMixed = box.lotNumber && (box.lotNumber.includes('\n') || box.lotNumber.length > 20);
-                     const hasLot = !!box.lotNumber;
-                     
-                     let actionBtn = '';
-                     if (!canEdit) {
-                         actionBtn = `<span style="color:#999">Locked</span>`;
-                     } else if (!hasLot) {
-                         actionBtn = `<button class="btn-sm btn-primary" onclick="openEditModal('${box.id}', 'assign')">🏷️ Assign Lot</button>`;
-                     } else {
-                         actionBtn = `<button class="btn-sm btn-warning" onclick="openEditModal('${box.id}', 'retro')">✏️ Edit</button>`;
-                     }
-
-                     nestedHtml += `
-                        <tr>
-                            <td style="font-family:monospace;">${box.id.split('-').pop()}</td>
-                            <td>${box.productName}</td>
-                            <td>${box.boxNumber}</td>
-                            <td>${box.qtyInBox}</td>
-                            <td>${isMixed ? '📚 Mixed Lots' : (box.lotNumber || '<span style="color:red">-</span>')}</td>
-                            <td>${box.status}</td>
-                            <td style="display:flex; gap:0.5rem;">
-                                ${actionBtn}
-                                <button class="btn-sm btn-secondary" onclick="printSingleLabel('${box.id}')">🖨️</button>
-                            </td>
-                        </tr>
-                      `;
-                });
-                nestedHtml += `</tbody></table></div></td>`;
-                detailsTr.innerHTML = nestedHtml;
-                tbody.appendChild(detailsTr);
-            });
-        }
-
         function toggleOrderDetails(orderId, rowElement) {
             const detailsRow = document.getElementById(`details-${orderId}`);
-            const isExpanded = detailsRow.classList.contains('active');
+            const isActive = detailsRow.classList.contains('active');
             document.querySelectorAll('.order-details-row').forEach(r => r.classList.remove('active'));
             document.querySelectorAll('.order-row').forEach(r => { r.classList.remove('expanded'); r.querySelector('td').textContent = '▶'; });
-            if (!isExpanded) { detailsRow.classList.add('active'); rowElement.classList.add('expanded'); rowElement.querySelector('td').textContent = '▼'; }
+            if (!isActive) { detailsRow.classList.add('active'); rowElement.classList.add('expanded'); rowElement.querySelector('td').textContent = '▼'; }
         }
 
         function updateStats() {
-            const todayStr = new Date().toISOString().split('T')[0];
-            const activeRecs = boxRecords.filter(r => !r.deleted);
-            document.getElementById('stat-total-orders').textContent = new Set(activeRecs.filter(r => r.packingDate === todayStr).map(r => r.orderNumber)).size;
-            const orders = groupRecordsByOrder(activeRecs);
-            const completed = orders.filter(o => o.isLocked).length;
-            document.getElementById('stat-completed').textContent = completed;
-            document.getElementById('stat-pending').textContent = orders.length - completed;
-        }
-
-        function deleteOrderByNumberDirect(orderNum) {
-            deleteTarget = { type: 'order', orderNumber: orderNum };
-            document.getElementById('deleteConfirmMessage').textContent = `Delete ALL boxes for Order ${orderNum}?`;
-            document.getElementById('confirmDeleteModal').classList.add('active');
-        }
-
-        function generatePackingListPDFForOrder(orderNum) {
-            document.getElementById('packingListOrderNumber').innerHTML = `<option value="${orderNum}">${orderNum}</option>`;
-            document.getElementById('packingListOrderNumber').value = orderNum;
-            document.querySelector('[onclick="switchTab(\'packing-list\')"]').click();
-            setTimeout(() => generatePackingListPDF(), 500);
-        }
-
-        function openEditModal(id, type) {
-            const r = boxRecords.find(x => x.id === id);
-            if (!r) return;
-            
-            currentEditingBoxId = id;
-            currentEditType = type;
-
-            document.getElementById('editModalProductName').value = r.productName;
-            document.getElementById('editModalQty').value = r.qtyInBox;
-            document.getElementById('editModalLotNumber').value = r.lotNumber || '';
-            document.getElementById('editModalRemarks').value = r.remarks || '';
-            document.getElementById('editModalReason').value = '';
-
-            const modalTitle = document.getElementById('editModalTitle');
-            const warning = document.getElementById('retroactiveWarning');
-            const reasonGroup = document.getElementById('editReasonGroup');
-
-            if (type === 'assign') {
-                modalTitle.textContent = "🏷️ Assign LOT Number";
-                modalTitle.style.color = "var(--primary)";
-                warning.style.display = 'none';
-                reasonGroup.style.display = 'none';
-            } else {
-                modalTitle.textContent = "✏️ Retroactive Edit";
-                modalTitle.style.color = "var(--warning)";
-                warning.style.display = 'block';
-                reasonGroup.style.display = 'block';
-            }
-
-            document.getElementById('editBoxModal').classList.add('active');
-        }
-
-        function saveBoxEdit() {
-            const r = boxRecords.find(x => x.id === currentEditingBoxId);
-            if (!r) return;
-
-            const newQty = parseInt(document.getElementById('editModalQty').value);
-            const newLot = document.getElementById('editModalLotNumber').value;
-            const newRemarks = document.getElementById('editModalRemarks').value;
-            const reason = document.getElementById('editModalReason').value.trim();
-
-            if (currentEditType === 'retro' && !reason) {
-                alert("Please provide a Reason for this retroactive edit.");
-                return;
-            }
-
-            if (currentEditType === 'retro') {
-                if(!r.auditLogs) r.auditLogs = [];
-                r.auditLogs.push({
-                    date: new Date().toISOString(),
-                    user: currentUserRole,
-                    reason: reason,
-                    changes: {
-                        oldQty: r.qtyInBox, newQty: newQty,
-                        oldLot: r.lotNumber, newLot: newLot
-                    }
-                });
-            }
-
-            r.qtyInBox = newQty;
-            r.lotNumber = newLot;
-            r.remarks = newRemarks;
-            r.status = r.lotNumber ? 'Packed' : 'Pending Lot';
-            
-            saveRecordsToStorage();
-            renderRecords();
-            closeEditBoxModal();
-            showAlert(currentEditType === 'assign' ? 'LOT Assigned!' : 'Record Updated!', 'success');
-        }
-
-        function confirmDelete() {
-            if(deleteTarget.type === 'order') {
-                boxRecords.forEach(r => { if(r.orderNumber === deleteTarget.orderNumber) r.deleted = true; });
-            }
-            saveRecordsToStorage(); renderRecords(); closeDeleteModal();
-            showAlert('Deleted successfully', 'success');
-        }
-
-        function exportToExcel() {
             const active = boxRecords.filter(r => !r.deleted);
-            if(!active.length) return showAlert('No records', 'error');
-            let csv = "BoxID,Order,Customer,Location,Product,BoxNum,TotalBox,Qty,LOT,Date,Status\n";
-            active.forEach(r => {
-                const safeLot = (r.lotNumber||'').replace(/\n/g, ' | ');
-                csv += `${r.id},${r.orderNumber},${r.customerName},${r.deliveryLocation},${r.productName},${r.boxNumber},${r.totalBoxes},${r.qtyInBox},"${safeLot}",${r.packingDate},${r.status}\n`;
-            });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
-            link.download = 'packing_records.csv';
-            link.click();
+            document.getElementById('stat-total-orders').textContent = new Set(active.map(r => r.orderNumber)).size;
         }
 
         function renderWithdrawalList() {
             const tbody = document.getElementById('withdrawalListBody');
-            const empty = document.getElementById('empty-withdrawal');
             tbody.innerHTML = '';
-
-            let orders = groupRecordsByOrder(boxRecords);
-            orders = orders.filter(o => {
-                const allHaveLot = o.boxes.every(b => b.lotNumber && b.lotNumber.trim() !== '');
-                const notWithdrawn = o.boxes.every(b => !b.withdrawn);
-                return allHaveLot && notWithdrawn;
-            });
-
-            const search = document.getElementById('withdrawalSearch').value.toLowerCase();
-            const sortBy = document.getElementById('withdrawalSortBy').value;
-
-            orders = orders.filter(o => 
-                o.orderNumber.toLowerCase().includes(search) || 
-                o.customerName.toLowerCase().includes(search)
-            );
-
-            orders.sort((a, b) => {
-                if (sortBy === 'date-desc') return new Date(b.packingDate) - new Date(a.packingDate);
-                if (sortBy === 'date-asc') return new Date(a.packingDate) - new Date(b.packingDate);
-                if (sortBy === 'customer') return a.customerName.localeCompare(b.customerName);
-                if (sortBy === 'boxes-desc') return b.totalBoxes - a.totalBoxes;
-                return 0;
-            });
-
-            updateWithdrawalStats(orders);
-
-            if (orders.length === 0) {
-                empty.style.display = 'block';
-                return;
-            }
-            empty.style.display = 'none';
+            let orders = groupRecordsByOrder(boxRecords).filter(o => o.boxes.every(b => b.workflowStatus === 'Orders Ready for Withdrawal'));
+            
+            updateBadgeCounts();
+            document.getElementById('empty-withdrawal').style.display = orders.length === 0 ? 'block' : 'none';
 
             orders.forEach(order => {
-                const daysWaiting = Math.floor((new Date() - new Date(order.packingDate)) / (1000 * 60 * 60 * 24));
-                const urgencyClass = daysWaiting > 7 ? 'status-locked' : (daysWaiting > 3 ? 'status-updated' : 'status-packed');
-
                 const tr = document.createElement('tr');
-                tr.className = 'order-row';
-                tr.onclick = (e) => { if(!e.target.closest('button')) toggleOrderDetails(order.orderNumber, tr); };
                 tr.innerHTML = `
-                    <td style="text-align:center; font-size:1.2rem;">▶</td>
-                    <td style="font-weight:700;">${order.orderNumber}</td>
-                    <td>${order.customerName}</td>
-                    <td>${order.boxes[0].deliveryLocation}</td>
-                    <td>${order.packingDate}</td>
-                    <td style="text-align:center; font-weight:700;">${order.totalBoxes}</td>
-                    <td style="text-align:center;"><span class="status-badge ${urgencyClass}">${daysWaiting} days</span></td>
-                    <td>
-                        <div class="action-btns">
-                            <button class="action-btn btn-success" onclick="openWithdrawalModal('${order.orderNumber}')">✅ Withdraw</button>
-                            <button class="action-btn btn-secondary" onclick="generatePackingListPDFForOrder('${order.orderNumber}')">📄 List</button>
-                        </div>
-                    </td>
+                    <td style="text-align:center;">▶</td>
+                    <td data-label="Order Number">${order.orderNumber}</td>
+                    <td data-label="Customer">${order.customerName}</td>
+                    <td data-label="Location">${order.boxes[0].deliveryLocation}</td>
+                    <td data-label="Date">${order.packingDate}</td>
+                    <td data-label="Items">${order.totalBoxes}</td>
+                    <td data-label="Waiting">-</td>
+                    <td data-label="Status"><span class="status-badge status-updated">Ready</span></td>
+                    <td data-label="Actions"><div class="action-btns">
+                        <button class="action-btn btn-primary" onclick="openStockEditModal('${order.orderNumber}')">📦 Stock Review</button>
+                    </div></td>
                 `;
                 tbody.appendChild(tr);
-
-                const detailsTr = document.createElement('tr');
-                detailsTr.id = `details-${order.orderNumber}`;
-                detailsTr.className = 'order-details-row';
-                let nestedHtml = `
-                    <td colspan="8"><div style="padding: 1rem;"><strong style="margin-left: 1rem; color: var(--primary);">📦 Boxes in this Order:</strong>
-                    <table class="nested-table"><thead><tr><th>Box ID</th><th>Product</th><th>Box #</th><th>Qty</th><th>LOT Number</th><th>Actions</th></tr></thead><tbody>
-                `;
-                order.boxes.sort((a,b) => a.boxNumber - b.boxNumber).forEach(box => {
-                    const isMixed = box.lotNumber && (box.lotNumber.includes('\n') || box.lotNumber.length > 20);
-                    nestedHtml += `
-                        <tr>
-                            <td style="font-family:monospace;">${box.id.split('-').pop()}</td>
-                            <td>${box.productName}</td>
-                            <td>${box.boxNumber}</td>
-                            <td>${box.qtyInBox}</td>
-                            <td>${isMixed ? '📚 Mixed Lots' : box.lotNumber}</td>
-                            <td><button class="btn-sm btn-secondary" onclick="printSingleLabel('${box.id}')">🖨️ Print</button></td>
-                        </tr>
-                    `;
-                });
-                nestedHtml += `</tbody></table></div></td>`;
-                detailsTr.innerHTML = nestedHtml;
-                tbody.appendChild(detailsTr);
             });
         }
 
-        function updateWithdrawalStats(orders) {
-            document.getElementById('stat-ready-orders').textContent = orders.length;
-            const totalBoxes = orders.reduce((sum, o) => sum + o.totalBoxes, 0);
-            document.getElementById('stat-ready-boxes').textContent = totalBoxes;
-            
-            if (orders.length > 0) {
-                const oldestDate = new Date(Math.min(...orders.map(o => new Date(o.packingDate))));
-                const oldestDays = Math.floor((new Date() - oldestDate) / (1000 * 60 * 60 * 24));
-                document.getElementById('stat-oldest-days').textContent = oldestDays;
-            } else {
-                document.getElementById('stat-oldest-days').textContent = '0';
-            }
-        }
-
-        function openWithdrawalModal(orderNumber) {
-            currentWithdrawalOrder = orderNumber;
-            const order = groupRecordsByOrder(boxRecords).find(o => o.orderNumber === orderNumber);
-            if (!order) return;
-
-            document.getElementById('withdrawalOrderInfo').innerHTML = `
-                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:0.5rem; font-size:0.9rem;">
-                    <div><strong>Order:</strong> ${order.orderNumber}</div>
-                    <div><strong>Customer:</strong> ${order.customerName}</div>
-                    <div><strong>Total Boxes:</strong> ${order.totalBoxes}</div>
-                    <div><strong>Packing Date:</strong> ${order.packingDate}</div>
-                </div>
-            `;
-
-            const now = new Date();
-            document.getElementById('withdrawalDate').valueAsDate = now;
-            document.getElementById('withdrawalTime').value = now.toTimeString().slice(0,5);
-            document.getElementById('withdrawnBy').value = '';
-            document.getElementById('withdrawalNotes').value = '';
-
-            document.getElementById('withdrawalModal').classList.add('active');
-        }
-
-        function closeWithdrawalModal() {
-            document.getElementById('withdrawalModal').classList.remove('active');
-            currentWithdrawalOrder = null;
-        }
-
-        function confirmWithdrawal() {
-            const withdrawnBy = document.getElementById('withdrawnBy').value.trim();
-            const withdrawalDate = document.getElementById('withdrawalDate').value;
-            const withdrawalTime = document.getElementById('withdrawalTime').value;
-            const notes = document.getElementById('withdrawalNotes').value.trim();
-
-            if (!withdrawnBy || !withdrawalDate || !withdrawalTime) {
-                alert('Please fill in all required fields (Name, Date, Time)');
-                return;
-            }
-
-            boxRecords.forEach(r => {
-                if (r.orderNumber === currentWithdrawalOrder && !r.deleted) {
-                    r.withdrawn = true;
-                    r.withdrawalInfo = {
-                        withdrawnBy: withdrawnBy,
-                        withdrawalDate: withdrawalDate,
-                        withdrawalTime: withdrawalTime,
-                        notes: notes,
-                        timestamp: new Date().toISOString()
-                    };
-                    r.status = 'Withdrawn';
-                }
+        function openStockEditModal(orderNumber) {
+            currentStockEditOrder = orderNumber;
+            const boxes = boxRecords.filter(r => r.orderNumber === orderNumber && !r.deleted);
+            document.getElementById('stockEditOrderInfo').innerHTML = `<strong>Order:</strong> ${orderNumber}`;
+            let html = '';
+            boxes.forEach((box, idx) => {
+                html += `<div style="border:1px solid #ddd; padding:1rem; margin-bottom:1rem; border-radius:8px;">
+                    <div>${box.productName}</div>
+                    <div class="form-grid">
+                        <div class="form-group"><label>LOT Number</label><input type="text" id="stock-lot-${idx}" value="${box.lotNumber}"></div>
+                        <div class="form-group"><label>Qty</label><input type="number" id="stock-qty-${idx}" value="${box.qtyInBox}"></div>
+                    </div>
+                </div>`;
             });
-
-            saveRecordsToStorage();
-            renderWithdrawalList();
-            closeWithdrawalModal();
-            showAlert(`Order ${currentWithdrawalOrder} marked as withdrawn!`, 'success');
+            document.getElementById('stockEditItems').innerHTML = html;
+            document.getElementById('stockEditModal').classList.add('active');
         }
 
-        function populateOrderNumberDropdown() {
-            const sel = document.getElementById('packingListOrderNumber');
-            const uniq = [...new Set(boxRecords.filter(r => !r.deleted).map(r => r.orderNumber))];
-            sel.innerHTML = '<option value="">-- Select Order --</option>';
-            uniq.forEach(o => { const opt = document.createElement('option'); opt.value = o; opt.textContent = o; sel.appendChild(opt); });
-        }
-
-        function generatePackingListPDF() {
-            const ord = document.getElementById('packingListOrderNumber').value;
-            if(!ord) return showAlert('Select Order', 'error');
-            const recs = boxRecords.filter(r => !r.deleted && r.orderNumber === ord);
-            if(!recs.length) return showAlert('No records', 'error');
-
-            const grouped = {};
-            recs.forEach(r => {
-                if(!grouped[r.productName]) grouped[r.productName] = [];
-                grouped[r.productName].push(r);
+        function submitStockAdjustment() {
+            const boxes = boxRecords.filter(r => r.orderNumber === currentStockEditOrder && !r.deleted);
+            boxes.forEach((box, idx) => {
+                box.lotNumber = document.getElementById(`stock-lot-${idx}`).value;
+                box.qtyInBox = parseInt(document.getElementById(`stock-qty-${idx}`).value);
+                box.workflowStatus = 'Waiting for QC Inspection';
+                box.itemStatus = 'QC Pending';
             });
-            Object.keys(grouped).forEach(k => grouped[k].sort((a,b) => a.boxNumber - b.boxNumber));
-
-            let html = `<div style="border:1px solid #ddd;padding:2rem;"><h3>PACKING LIST: ${ord}</h3><p>Customer: ${recs[0].customerName} | Date: ${recs[0].packingDate}</p><hr>`;
-            Object.keys(grouped).forEach(sku => {
-                html += `<h4>${sku}</h4><table style="width:100%;border-collapse:collapse;margin-bottom:1rem;"><tr><th style="border:1px solid #eee">Box</th><th style="border:1px solid #eee">Qty</th><th style="border:1px solid #eee">LOT</th></tr>`;
-                grouped[sku].forEach(r => {
-                    html += `<tr><td style="border:1px solid #eee;text-align:center">${r.boxNumber}/${r.totalBoxes}</td><td style="border:1px solid #eee;text-align:center">${r.qtyInBox}</td><td style="border:1px solid #eee;white-space:pre-wrap;">${r.lotNumber||'-'}</td></tr>`;
-                });
-                html += `</table>`;
-            });
-            html += `</div>`;
-            document.getElementById('packing-list-content').innerHTML = html;
-            document.getElementById('packing-list-preview').style.display = 'block';
-
-            let printHtml = `<div class="packing-list-page"><div class="packing-list-print"><div class="packing-list-header"><h1 class="packing-list-title">PACKING LIST</h1><div class="packing-list-info"><div>Order: ${ord}</div><div>Customer: ${recs[0].customerName}</div><div>Date: ${recs[0].packingDate}</div></div></div>`;
-            Object.keys(grouped).forEach(sku => {
-                printHtml += `<div class="packing-list-sku-section"><div class="packing-list-sku-header">${sku}</div><table class="packing-list-table"><thead><tr><th>Box</th><th>ID</th><th>Qty</th><th>LOT</th></tr></thead><tbody>`;
-                grouped[sku].forEach(r => {
-                    printHtml += `<tr><td>${r.boxNumber}/${r.totalBoxes}</td><td>${r.id}</td><td>${r.qtyInBox}</td><td style="white-space:pre-wrap;">${r.lotNumber||'-'}</td></tr>`;
-                });
-                printHtml += `</tbody></table></div>`;
-            });
-            printHtml += `</div></div>`;
-            document.getElementById('packing-list-print-container').innerHTML = printHtml;
+            saveRecordsToStorage(); closeStockEditModal(); renderWithdrawalList();
+            showAlert('Sent to QC!', 'success');
         }
 
-        function printPackingList() { window.print(); }
-
-        function renderRecords() {
-            renderOrderList();
-            generateLabelPreviews();
+        function updateBadgeCounts() {
+            const qcCount = new Set(boxRecords.filter(r => !r.deleted && r.workflowStatus === 'Waiting for QC Inspection').map(r => r.orderNumber)).size;
+            document.getElementById('qc-badge').textContent = qcCount;
+            document.getElementById('qc-badge').style.display = qcCount > 0 ? 'inline-block' : 'none';
         }
 
-        function saveQueueToStorage() { localStorage.setItem('packingQueue', JSON.stringify(packingQueue)); }
-        function saveRecordsToStorage() { localStorage.setItem('boxRecords', JSON.stringify(boxRecords)); }
-        function loadRecordsFromStorage() {
-            if(localStorage.getItem('boxRecords')) boxRecords = JSON.parse(localStorage.getItem('boxRecords'));
-            if(localStorage.getItem('packingQueue')) packingQueue = JSON.parse(localStorage.getItem('packingQueue'));
-        }
-
-        function closeEditBoxModal() { document.getElementById('editBoxModal').classList.remove('active'); }
-        function closeDeleteModal() { document.getElementById('confirmDeleteModal').classList.remove('active'); }
-        
         function showAlert(msg, type) {
             const d = document.createElement('div');
             d.className = `alert alert-${type} active`; d.textContent = msg;
@@ -1537,551 +1104,24 @@
             setTimeout(() => d.remove(), 3000);
         }
 
-        // ========== NEW WORKFLOW FUNCTIONS ==========
-
-        function updateBadgeCounts() {
-            const withdrawalOrders = boxRecords.filter(r => !r.deleted && r.workflowStatus === 'Orders Ready for Withdrawal');
-            const withdrawalCount = new Set(withdrawalOrders.map(r => r.orderNumber)).size;
-            document.getElementById('withdrawal-badge').textContent = withdrawalCount;
-            document.getElementById('withdrawal-badge').style.display = withdrawalCount > 0 ? 'inline-block' : 'none';
-
-            const qcOrders = boxRecords.filter(r => !r.deleted && (r.workflowStatus === 'Waiting for QC Inspection' || r.workflowStatus === 'Partially QC Passed'));
-            const qcCount = new Set(qcOrders.map(r => r.orderNumber)).size;
-            document.getElementById('qc-badge').textContent = qcCount;
-            document.getElementById('qc-badge').style.display = qcCount > 0 ? 'inline-block' : 'none';
-
-            const reworkOrders = boxRecords.filter(r => !r.deleted && r.itemStatus === 'Returned to Stock');
-            const reworkCount = new Set(reworkOrders.map(r => r.orderNumber)).size;
-            document.getElementById('rework-badge').textContent = reworkCount;
-            document.getElementById('rework-badge').style.display = reworkCount > 0 ? 'inline-block' : 'none';
-
-            const shipOrders = boxRecords.filter(r => !r.deleted && r.workflowStatus === 'Ready to Ship');
-            const shipCount = new Set(shipOrders.map(r => r.orderNumber)).size;
-            document.getElementById('ship-badge').textContent = shipCount;
-            document.getElementById('ship-badge').style.display = shipCount > 0 ? 'inline-block' : 'none';
+        function saveQueueToStorage() { localStorage.setItem('packingQueue', JSON.stringify(packingQueue)); }
+        function saveRecordsToStorage() { localStorage.setItem('boxRecords', JSON.stringify(boxRecords)); }
+        function loadRecordsFromStorage() {
+            boxRecords = JSON.parse(localStorage.getItem('boxRecords')) || [];
+            packingQueue = JSON.parse(localStorage.getItem('packingQueue')) || [];
         }
 
-        function renderWithdrawalList() {
-            const tbody = document.getElementById('withdrawalListBody');
-            const empty = document.getElementById('empty-withdrawal');
-            tbody.innerHTML = '';
+        function closeEditBoxModal() { document.getElementById('editBoxModal').classList.remove('active'); }
+        function closeStockEditModal() { document.getElementById('stockEditModal').classList.remove('active'); }
+        function closeQCInspectionModal() { document.getElementById('qcInspectionModal').classList.remove('active'); }
+        function closeReworkModal() { document.getElementById('stockReworkModal').classList.remove('active'); }
+        function closeDeleteModal() { document.getElementById('confirmDeleteModal').classList.remove('active'); }
 
-            let orders = groupRecordsByOrder(boxRecords);
-            orders = orders.filter(o => {
-                return o.boxes.every(b => b.workflowStatus === 'Orders Ready for Withdrawal');
-            });
-
-            const search = document.getElementById('withdrawalSearch').value.toLowerCase();
-            const sortBy = document.getElementById('withdrawalSortBy').value;
-
-            orders = orders.filter(o => 
-                o.orderNumber.toLowerCase().includes(search) || 
-                o.customerName.toLowerCase().includes(search)
-            );
-
-            orders.sort((a, b) => {
-                if (sortBy === 'date-desc') return new Date(b.packingDate) - new Date(a.packingDate);
-                if (sortBy === 'date-asc') return new Date(a.packingDate) - new Date(b.packingDate);
-                if (sortBy === 'customer') return a.customerName.localeCompare(b.customerName);
-                if (sortBy === 'boxes-desc') return b.totalBoxes - a.totalBoxes;
-                return 0;
-            });
-
-            updateWithdrawalStats(orders);
-            updateBadgeCounts();
-
-            if (orders.length === 0) {
-                empty.style.display = 'block';
-                return;
-            }
-            empty.style.display = 'none';
-
-            orders.forEach(order => {
-                const daysWaiting = Math.floor((new Date() - new Date(order.packingDate)) / (1000 * 60 * 60 * 24));
-                const urgencyClass = daysWaiting > 7 ? 'status-locked' : (daysWaiting > 3 ? 'status-updated' : 'status-packed');
-
-                const tr = document.createElement('tr');
-                tr.className = 'order-row';
-                tr.onclick = (e) => { if(!e.target.closest('button')) toggleOrderDetails(order.orderNumber, tr); };
-                tr.innerHTML = `
-                    <td style="text-align:center; font-size:1.2rem;">▶</td>
-                    <td style="font-weight:700;">${order.orderNumber}</td>
-                    <td>${order.customerName}</td>
-                    <td>${order.boxes[0].deliveryLocation}</td>
-                    <td>${order.packingDate}</td>
-                    <td style="text-align:center; font-weight:700;">${order.totalBoxes}</td>
-                    <td style="text-align:center;"><span class="status-badge ${urgencyClass}">${daysWaiting} days</span></td>
-                    <td><span class="status-badge status-updated">Ready for Stock</span></td>
-                    <td>
-                        <div class="action-btns">
-                            ${currentUserRole === 'store' || currentUserRole === 'supervisor' ? `<button class="action-btn btn-primary" onclick="openStockEditModal('${order.orderNumber}')">📦 Stock Review</button>` : ''}
-                            <button class="action-btn btn-secondary" onclick="generatePackingListPDFForOrder('${order.orderNumber}')">📄 List</button>
-                        </div>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-
-                const detailsTr = document.createElement('tr');
-                detailsTr.id = `details-${order.orderNumber}`;
-                detailsTr.className = 'order-details-row';
-                let nestedHtml = `
-                    <td colspan="9"><div style="padding: 1rem;"><strong style="margin-left: 1rem; color: var(--primary);">📦 Items in this Order:</strong>
-                    <table class="nested-table"><thead><tr><th>Box ID</th><th>Product</th><th>Box #</th><th>Qty</th><th>LOT</th><th>Item Status</th></tr></thead><tbody>
-                `;
-                order.boxes.sort((a,b) => a.boxNumber - b.boxNumber).forEach(box => {
-                    nestedHtml += `
-                        <tr>
-                            <td style="font-family:monospace;">${box.id.split('-').pop()}</td>
-                            <td>${box.productName}</td>
-                            <td>${box.boxNumber}</td>
-                            <td>${box.qtyInBox}</td>
-                            <td>${box.lotNumber || '-'}</td>
-                            <td><span class="status-badge status-updated">${box.itemStatus}</span></td>
-                        </tr>
-                    `;
-                });
-                nestedHtml += `</tbody></table></div></td>`;
-                detailsTr.innerHTML = nestedHtml;
-                tbody.appendChild(detailsTr);
-            });
-        }
-
-        function openStockEditModal(orderNumber) {
-            if (currentUserRole !== 'store' && currentUserRole !== 'supervisor') {
-                alert('Only Stock staff can perform this action');
-                return;
-            }
-
-            currentStockEditOrder = orderNumber;
-            const boxes = boxRecords.filter(r => r.orderNumber === orderNumber && !r.deleted);
-            
-            document.getElementById('stockEditOrderInfo').innerHTML = `
-                <div><strong>Order:</strong> ${orderNumber} | <strong>Customer:</strong> ${boxes[0].customerName}</div>
-            `;
-
-            let itemsHTML = '<div style="display:flex; flex-direction:column; gap:1rem;">';
-            boxes.forEach((box, idx) => {
-                itemsHTML += `
-                    <div style="border:1px solid #ddd; padding:1rem; border-radius:8px;">
-                        <div style="font-weight:600; margin-bottom:0.5rem;">${box.productName} - Box ${box.boxNumber}</div>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-                            <div class="form-group">
-                                <label>LOT Number *</label>
-                                <input type="text" id="stock-lot-${idx}" value="${box.lotNumber || box.stockAdjustedLot}" style="padding:0.5rem; border:2px solid var(--border); border-radius:6px; width:100%;">
-                            </div>
-                            <div class="form-group">
-                                <label>Quantity *</label>
-                                <input type="number" id="stock-qty-${idx}" value="${box.stockAdjustedQty}" min="1" style="padding:0.5rem; border:2px solid var(--border); border-radius:6px; width:100%;">
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            itemsHTML += '</div>';
-            document.getElementById('stockEditItems').innerHTML = itemsHTML;
-            document.getElementById('stockEditModal').classList.add('active');
-        }
-
-        function closeStockEditModal() {
-            document.getElementById('stockEditModal').classList.remove('active');
-            currentStockEditOrder = null;
-        }
-
-        function submitStockAdjustment() {
-            const boxes = boxRecords.filter(r => r.orderNumber === currentStockEditOrder && !r.deleted);
-            
-            boxes.forEach((box, idx) => {
-                const lot = document.getElementById(`stock-lot-${idx}`).value.trim();
-                const qty = parseInt(document.getElementById(`stock-qty-${idx}`).value);
-
-                if (!lot || qty <= 0) {
-                    alert(`Please fill all fields for ${box.productName}`);
-                    return;
-                }
-
-                box.stockAdjustedLot = lot;
-                box.stockAdjustedQty = qty;
-                box.lotNumber = lot;
-                box.qtyInBox = qty;
-                box.workflowStatus = 'Waiting for QC Inspection';
-                box.itemStatus = 'QC Pending';
-            });
-
-            saveRecordsToStorage();
-            closeStockEditModal();
-            renderWithdrawalList();
-            showAlert('Stock adjustment completed. Order sent to QC!', 'success');
-        }
-
-        function renderQCInspectionList() {
-            const tbody = document.getElementById('qcListBody');
-            const empty = document.getElementById('empty-qc');
-            tbody.innerHTML = '';
-
-            let orders = groupRecordsByOrder(boxRecords);
-            orders = orders.filter(o => {
-                return o.boxes.some(b => b.workflowStatus === 'Waiting for QC Inspection' || b.workflowStatus === 'Partially QC Passed');
-            });
-
-            updateBadgeCounts();
-
-            if (orders.length === 0) {
-                empty.style.display = 'block';
-                return;
-            }
-            empty.style.display = 'none';
-
-            orders.forEach(order => {
-                const tr = document.createElement('tr');
-                tr.className = 'order-row';
-                tr.onclick = (e) => { if(!e.target.closest('button')) toggleOrderDetails(order.orderNumber, tr); };
-                
-                const statusClass = order.boxes.every(b => b.qcPassQty > 0) ? 'status-packed' : 'status-updated';
-                const statusText = order.boxes.every(b => b.qcPassQty > 0) ? 'Partially Passed' : 'QC Pending';
-                
-                tr.innerHTML = `
-                    <td style="text-align:center;">▶</td>
-                    <td style="font-weight:700;">${order.orderNumber}</td>
-                    <td>${order.customerName}</td>
-                    <td style="text-align:center;">${order.totalBoxes}</td>
-                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                    <td>
-                        ${currentUserRole === 'qc' || currentUserRole === 'supervisor' ? `<button class="action-btn btn-primary" onclick="openQCInspectionModal('${order.orderNumber}')">🔍 Inspect</button>` : ''}
-                    </td>
-                `;
-                tbody.appendChild(tr);
-
-                const detailsTr = document.createElement('tr');
-                detailsTr.id = `details-${order.orderNumber}`;
-                detailsTr.className = 'order-details-row';
-                let nestedHtml = `<td colspan="6"><div style="padding:1rem;"><table class="nested-table"><thead><tr><th>Product</th><th>Stock Qty</th><th>QC Pass</th><th>QC Fail</th><th>Status</th></tr></thead><tbody>`;
-                
-                order.boxes.forEach(box => {
-                    nestedHtml += `
-                        <tr>
-                            <td>${box.productName}</td>
-                            <td>${box.stockAdjustedQty}</td>
-                            <td>${box.qcPassQty}</td>
-                            <td>${box.qcFailQty}</td>
-                            <td><span class="status-badge status-updated">${box.itemStatus}</span></td>
-                        </tr>
-                    `;
-                });
-                nestedHtml += `</tbody></table></div></td>`;
-                detailsTr.innerHTML = nestedHtml;
-                tbody.appendChild(detailsTr);
-            });
-
-            document.getElementById('stat-qc-pending').textContent = orders.length;
-            const passed = boxRecords.filter(r => !r.deleted && r.qcPassQty > 0).length;
-            document.getElementById('stat-qc-passed').textContent = passed;
-            const failed = boxRecords.filter(r => !r.deleted && r.qcFailQty > 0).length;
-            document.getElementById('stat-qc-failed').textContent = failed;
-        }
-
-        function openQCInspectionModal(orderNumber) {
-            if (currentUserRole !== 'qc' && currentUserRole !== 'supervisor') {
-                alert('Only QC staff can perform this action');
-                return;
-            }
-
-            currentQCInspectionOrder = orderNumber;
-            const boxes = boxRecords.filter(r => r.orderNumber === orderNumber && !r.deleted && (r.workflowStatus === 'Waiting for QC Inspection' || r.workflowStatus === 'Partially QC Passed'));
-            
-            document.getElementById('qcInspectionOrderInfo').innerHTML = `
-                <div><strong>Order:</strong> ${orderNumber} | <strong>Customer:</strong> ${boxes[0].customerName}</div>
-            `;
-
-            let itemsHTML = '<div style="display:flex; flex-direction:column; gap:1rem;">';
-            boxes.forEach((box, idx) => {
-                itemsHTML += `
-                    <div style="border:1px solid #ddd; padding:1rem; border-radius:8px;">
-                        <div style="font-weight:600; margin-bottom:0.5rem;">${box.productName} - Box ${box.boxNumber}</div>
-                        <div style="margin-bottom:0.5rem;"><strong>LOT:</strong> ${box.stockAdjustedLot} | <strong>Stock Qty:</strong> ${box.stockAdjustedQty}</div>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-                            <div class="form-group">
-                                <label style="color:var(--success);">QC Pass Quantity *</label>
-                                <input type="number" id="qc-pass-${idx}" value="${box.qcPassQty}" min="0" max="${box.stockAdjustedQty}" style="padding:0.5rem; border:2px solid var(--success); border-radius:6px; width:100%;" onchange="validateQCQty(${idx}, ${box.stockAdjustedQty})">
-                            </div>
-                            <div class="form-group">
-                                <label style="color:var(--danger);">QC Fail Quantity *</label>
-                                <input type="number" id="qc-fail-${idx}" value="${box.qcFailQty}" min="0" max="${box.stockAdjustedQty}" style="padding:0.5rem; border:2px solid var(--danger); border-radius:6px; width:100%;" onchange="validateQCQty(${idx}, ${box.stockAdjustedQty})">
-                            </div>
-                        </div>
-                        <small id="qc-error-${idx}" style="color:var(--danger); display:none;">Pass + Fail cannot exceed Stock Qty!</small>
-                    </div>
-                `;
-            });
-            itemsHTML += '</div>';
-            document.getElementById('qcInspectionItems').innerHTML = itemsHTML;
-            document.getElementById('qcInspectionModal').classList.add('active');
-        }
-
-        function validateQCQty(idx, maxQty) {
-            const passQty = parseInt(document.getElementById(`qc-pass-${idx}`).value) || 0;
-            const failQty = parseInt(document.getElementById(`qc-fail-${idx}`).value) || 0;
-            const errorEl = document.getElementById(`qc-error-${idx}`);
-
-            if (passQty + failQty > maxQty) {
-                errorEl.style.display = 'block';
-                return false;
-            } else {
-                errorEl.style.display = 'none';
-                return true;
-            }
-        }
-
-        function closeQCInspectionModal() {
-            document.getElementById('qcInspectionModal').classList.remove('active');
-            currentQCInspectionOrder = null;
-        }
-
-        function submitQCInspection() {
-            const boxes = boxRecords.filter(r => r.orderNumber === currentQCInspectionOrder && !r.deleted && (r.workflowStatus === 'Waiting for QC Inspection' || r.workflowStatus === 'Partially QC Passed'));
-            
-            let allValid = true;
-            boxes.forEach((box, idx) => {
-                if (!validateQCQty(idx, box.stockAdjustedQty)) {
-                    allValid = false;
-                }
-            });
-
-            if (!allValid) {
-                alert('Please fix validation errors before submitting');
-                return;
-            }
-
-            boxes.forEach((box, idx) => {
-                const passQty = parseInt(document.getElementById(`qc-pass-${idx}`).value) || 0;
-                const failQty = parseInt(document.getElementById(`qc-fail-${idx}`).value) || 0;
-
-                box.qcPassQty = passQty;
-                box.qcFailQty = failQty;
-                box.qcInspectedQty = passQty + failQty;
-                box.finalApprovedQty = passQty;
-
-                if (failQty > 0) {
-                    box.itemStatus = 'Returned to Stock';
-                    box.reworkQty = failQty;
-                    box.workflowStatus = 'Partially QC Passed';
-                } else if (passQty > 0) {
-                    box.itemStatus = 'QC Pass';
-                }
-            });
-
-            const allPassed = boxes.every(b => b.qcFailQty === 0 && b.qcPassQty > 0);
-            boxes.forEach(box => {
-                if (allPassed) {
-                    box.workflowStatus = 'Ready to Ship';
-                }
-            });
-
-            saveRecordsToStorage();
-            closeQCInspectionModal();
-            renderQCInspectionList();
-            if (allPassed) {
-                showAlert('QC Passed! Order is ready to ship.', 'success');
-            } else {
-                showAlert('QC Completed. Failed items sent to Stock for rework.', 'warning');
-            }
-        }
-
-        function renderStockReworkList() {
-            const tbody = document.getElementById('reworkListBody');
-            const empty = document.getElementById('empty-rework');
-            tbody.innerHTML = '';
-
-            let orders = groupRecordsByOrder(boxRecords);
-            orders = orders.filter(o => {
-                return o.boxes.some(b => b.itemStatus === 'Returned to Stock' && b.reworkQty > 0);
-            });
-
-            updateBadgeCounts();
-
-            if (orders.length === 0) {
-                empty.style.display = 'block';
-                return;
-            }
-            empty.style.display = 'none';
-
-            orders.forEach(order => {
-                const failedItems = order.boxes.filter(b => b.itemStatus === 'Returned to Stock').length;
-                const tr = document.createElement('tr');
-                tr.className = 'order-row';
-                tr.onclick = (e) => { if(!e.target.closest('button')) toggleOrderDetails(order.orderNumber, tr); };
-                
-                tr.innerHTML = `
-                    <td style="text-align:center;">▶</td>
-                    <td style="font-weight:700;">${order.orderNumber}</td>
-                    <td>${order.customerName}</td>
-                    <td style="text-align:center; color:var(--danger); font-weight:600;">${failedItems}</td>
-                    <td>
-                        ${currentUserRole === 'store' || currentUserRole === 'supervisor' ? `<button class="action-btn btn-warning" onclick="openReworkModal('${order.orderNumber}')">🔧 Rework</button>` : ''}
-                    </td>
-                `;
-                tbody.appendChild(tr);
-
-                const detailsTr = document.createElement('tr');
-                detailsTr.id = `details-${order.orderNumber}`;
-                detailsTr.className = 'order-details-row';
-                let nestedHtml = `<td colspan="5"><div style="padding:1rem;"><table class="nested-table"><thead><tr><th>Product</th><th>Failed Qty</th><th>LOT</th><th>Status</th></tr></thead><tbody>`;
-                
-                order.boxes.filter(b => b.itemStatus === 'Returned to Stock').forEach(box => {
-                    nestedHtml += `
-                        <tr>
-                            <td>${box.productName}</td>
-                            <td style="color:var(--danger); font-weight:600;">${box.reworkQty}</td>
-                            <td>${box.stockAdjustedLot}</td>
-                            <td><span class="status-badge status-locked">Needs Rework</span></td>
-                        </tr>
-                    `;
-                });
-                nestedHtml += `</tbody></table></div></td>`;
-                detailsTr.innerHTML = nestedHtml;
-                tbody.appendChild(detailsTr);
-            });
-        }
-
-        function openReworkModal(orderNumber) {
-            if (currentUserRole !== 'store' && currentUserRole !== 'supervisor') {
-                alert('Only Stock staff can perform this action');
-                return;
-            }
-
-            currentReworkOrder = orderNumber;
-            const boxes = boxRecords.filter(r => r.orderNumber === orderNumber && !r.deleted && r.itemStatus === 'Returned to Stock');
-            
-            document.getElementById('reworkOrderInfo').innerHTML = `
-                <div><strong>Order:</strong> ${orderNumber} | <strong>Customer:</strong> ${boxes[0].customerName}</div>
-            `;
-
-            let itemsHTML = '<div style="display:flex; flex-direction:column; gap:1rem;">';
-            boxes.forEach((box, idx) => {
-                itemsHTML += `
-                    <div style="border:1px solid var(--danger); padding:1rem; border-radius:8px; background:#fff5f5;">
-                        <div style="font-weight:600; margin-bottom:0.5rem; color:var(--danger);">❌ ${box.productName} - Box ${box.boxNumber}</div>
-                        <div style="margin-bottom:0.5rem;"><strong>Failed Qty:</strong> ${box.reworkQty}</div>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-                            <div class="form-group">
-                                <label>New LOT Number *</label>
-                                <input type="text" id="rework-lot-${idx}" value="${box.stockAdjustedLot}" style="padding:0.5rem; border:2px solid var(--border); border-radius:6px; width:100%;">
-                            </div>
-                            <div class="form-group">
-                                <label>Corrected Quantity *</label>
-                                <input type="number" id="rework-qty-${idx}" value="${box.reworkQty}" min="1" max="${box.reworkQty}" style="padding:0.5rem; border:2px solid var(--border); border-radius:6px; width:100%;">
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            itemsHTML += '</div>';
-            document.getElementById('reworkItems').innerHTML = itemsHTML;
-            document.getElementById('stockReworkModal').classList.add('active');
-        }
-
-        function closeReworkModal() {
-            document.getElementById('stockReworkModal').classList.remove('active');
-            currentReworkOrder = null;
-        }
-
-        function submitRework() {
-            const boxes = boxRecords.filter(r => r.orderNumber === currentReworkOrder && !r.deleted && r.itemStatus === 'Returned to Stock');
-            
-            boxes.forEach((box, idx) => {
-                const lot = document.getElementById(`rework-lot-${idx}`).value.trim();
-                const qty = parseInt(document.getElementById(`rework-qty-${idx}`).value);
-
-                if (!lot || qty <= 0) {
-                    alert(`Please fill all fields for ${box.productName}`);
-                    return;
-                }
-
-                box.stockAdjustedLot = lot;
-                box.stockAdjustedQty = qty;
-                box.lotNumber = lot;
-                box.reworkQty = 0;
-                box.qcPassQty = 0;
-                box.qcFailQty = 0;
-                box.workflowStatus = 'Waiting for QC Inspection';
-                box.itemStatus = 'QC Pending';
-            });
-
-            saveRecordsToStorage();
-            closeReworkModal();
-            renderStockReworkList();
-            showAlert('Rework completed. Items sent back to QC for re-inspection.', 'success');
-        }
-
-        function renderReadyToShipList() {
-            const tbody = document.getElementById('shipListBody');
-            const empty = document.getElementById('empty-ship');
-            tbody.innerHTML = '';
-
-            let orders = groupRecordsByOrder(boxRecords);
-            orders = orders.filter(o => {
-                return o.boxes.every(b => b.workflowStatus === 'Ready to Ship' && b.finalApprovedQty > 0);
-            });
-
-            updateBadgeCounts();
-
-            if (orders.length === 0) {
-                empty.style.display = 'block';
-                return;
-            }
-            empty.style.display = 'none';
-
-            orders.forEach(order => {
-                const tr = document.createElement('tr');
-                tr.className = 'order-row';
-                tr.onclick = (e) => { if(!e.target.closest('button')) toggleOrderDetails(order.orderNumber, tr); };
-                
-                tr.innerHTML = `
-                    <td style="text-align:center;">▶</td>
-                    <td style="font-weight:700;">${order.orderNumber}</td>
-                    <td>${order.customerName}</td>
-                    <td style="text-align:center;">${order.totalBoxes}</td>
-                    <td>${order.packingDate}</td>
-                    <td>
-                        <button class="action-btn btn-success" onclick="shipOrder('${order.orderNumber}')">🚚 Ship Now</button>
-                        <button class="action-btn btn-secondary" onclick="generatePackingListPDFForOrder('${order.orderNumber}')">📄 List</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-
-                const detailsTr = document.createElement('tr');
-                detailsTr.id = `details-${order.orderNumber}`;
-                detailsTr.className = 'order-details-row';
-                let nestedHtml = `<td colspan="6"><div style="padding:1rem;"><table class="nested-table"><thead><tr><th>Product</th><th>Approved Qty</th><th>LOT</th><th>Status</th></tr></thead><tbody>`;
-                
-                order.boxes.forEach(box => {
-                    nestedHtml += `
-                        <tr>
-                            <td>${box.productName}</td>
-                            <td style="color:var(--success); font-weight:600;">${box.finalApprovedQty}</td>
-                            <td>${box.stockAdjustedLot}</td>
-                            <td><span class="status-badge status-packed">✅ Ready</span></td>
-                        </tr>
-                    `;
-                });
-                nestedHtml += `</tbody></table></div></td>`;
-                detailsTr.innerHTML = nestedHtml;
-                tbody.appendChild(detailsTr);
-            });
-        }
-
-        function shipOrder(orderNumber) {
-            if (confirm(`Ship order ${orderNumber} to customer?`)) {
-                boxRecords.forEach(r => {
-                    if (r.orderNumber === orderNumber && !r.deleted && r.workflowStatus === 'Ready to Ship') {
-                        r.workflowStatus = 'Shipped';
-                        r.itemStatus = 'Shipped';
-                        r.shippedDate = new Date().toISOString();
-                    }
-                });
-                saveRecordsToStorage();
-                renderReadyToShipList();
-                showAlert(`Order ${orderNumber} has been shipped!`, 'success');
-            }
+        function populateOrderNumberDropdown() {
+            const sel = document.getElementById('packingListOrderNumber');
+            const uniq = [...new Set(boxRecords.filter(r => !r.deleted).map(r => r.orderNumber))];
+            sel.innerHTML = '<option value="">-- Select Order --</option>';
+            uniq.forEach(o => { const opt = document.createElement('option'); opt.value = o; opt.textContent = o; sel.appendChild(opt); });
         }
     </script>
 </body>
